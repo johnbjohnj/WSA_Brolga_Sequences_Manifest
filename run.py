@@ -130,7 +130,7 @@ def move_files_to_sequences_and_merge(manifest_root):
             continue
 
         # Handle configurations project
-        if project_name == "configurations":
+        if project_name == "WSA_Brolga_Sequences_Configuration":
             print(f"Processing configurations from {project_path}...")
             # Move files from configurations to the parent directory of sequences
             parent_folder = os.path.abspath(os.path.join(sequences_path, ".."))

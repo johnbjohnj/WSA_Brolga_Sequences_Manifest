@@ -4,11 +4,14 @@
 
     <remote name="johnb" fetch="https://github.com/johnbjohnj" />
 
-    <project name="configurations" remote="johnb" path="WSA_BRO_SEQ_vVERSION_PLACEHOLDER/configurations" revision="main" />
-    <project name="calibration" remote="johnb" path="WSA_BRO_SEQ_vVERSION_PLACEHOLDER/calibration" revision="main">
+    <project name="WSA_Brolga_Sequences_Configuration" remote="johnb" path="WSA_BRO_SEQ_vVERSION_PLACEHOLDER/configurations" revision="WSA_BRO_SEQ_CONF_v1.0" />
+    <project name="WSA_Brolga_Sequences_Servicing" remote="johnb" path="WSA_BRO_SEQ_vVERSION_PLACEHOLDER/calibration" revision="WSA_BRO_SEQ_SERV_v1.0">
         <sparse path="commisioning/" />
     </project>
-    <project name="production" remote="johnb" path="WSA_BRO_SEQ_vVERSION_PLACEHOLDER/production" revision="main">
+    <project name="WSA_Brolga_Sequences_Production" remote="johnb" path="WSA_BRO_SEQ_vVERSION_PLACEHOLDER/production" revision="WSA_BRO_SEQ_PROD_v2.0">
         <sparse path="production/" />
+    </project>
+	<project name="WSA_Brolga_Sequences_Manufacturing" remote="johnb" path="WSA_BRO_SEQ_vVERSION_PLACEHOLDER/manufacturing" revision="WSA_BRO_SEQ_MANU_v1.0">
+        <sparse path="manufacturing/" />
     </project>
 </manifest>
