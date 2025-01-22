@@ -1,14 +1,14 @@
 <manifest>
     <!-- Define the version -->
-    <property name="version" value="2.0" />
+    <property name="version" value="3.0" />
 
     <remote name="johnb" fetch="https://github.com/johnbjohnj" />
 
-    <project name="configurations" remote="johnb" path="RELEASE_vVERSION_PLACEHOLDER/configurations" revision="WSA_CONFIG_v1.0" />
-    <project name="calibration" remote="johnb" path="RELEASE_vVERSION_PLACEHOLDER/calibration" revision="WSA_COMMISSIONING_v2.0">
+    <project name="configurations" remote="johnb" path="WSA_BRO_SEQ_vVERSION_PLACEHOLDER/configurations" revision="main" />
+    <project name="calibration" remote="johnb" path="WSA_BRO_SEQ_vVERSION_PLACEHOLDER/calibration" revision="main">
         <sparse path="commisioning/" />
     </project>
-    <project name="production" remote="johnb" path="RELEASE_vVERSION_PLACEHOLDER/production" revision="main">
+    <project name="production" remote="johnb" path="WSA_BRO_SEQ_vVERSION_PLACEHOLDER/production" revision="main">
         <sparse path="production/" />
     </project>
 </manifest>

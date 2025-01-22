@@ -94,6 +94,76 @@ def delete_git_folders(base_path):
                 shutil.rmtree(git_folder)
 
 
+def move_files_to_sequences_and_merge(manifest_root):
+    """
+    Organize files into a dynamically determined 'sequences' folder
+    and handle configurations.
+
+    Args:
+        manifest_root (Element): Root element of the parsed manifest file.
+    """
+    # Get the parent folder of one of the project paths as the base path for sequences
+    sequences_path = None
+    for project in manifest_root.findall("project"):
+        project_path = project.get("path")
+        if project_path:  # Ensure path exists
+            sequences_path = os.path.abspath(os.path.join(project_path, "..", "sequences"))
+            break
+
+    if not sequences_path:
+        print("No valid project paths found. Cannot determine 'sequences' folder path.")
+        return
+
+    # Ensure 'sequences' folder exists
+    if not os.path.exists(sequences_path):
+        os.makedirs(sequences_path)
+        print(f"'sequences' folder created at: {sequences_path}")
+
+    # Iterate through all projects in the manifest
+    for project in manifest_root.findall("project"):
+        project_name = project.get("name")
+        project_path = project.get("path")
+
+        # Ensure the project path exists
+        if not project_path or not os.path.exists(project_path):
+            print(f"Project path for {project_name} does not exist. Skipping...")
+            continue
+
+        # Handle configurations project
+        if project_name == "configurations":
+            print(f"Processing configurations from {project_path}...")
+            # Move files from configurations to the parent directory of sequences
+            parent_folder = os.path.abspath(os.path.join(sequences_path, ".."))
+            for file_name in os.listdir(project_path):
+                src_file = os.path.join(project_path, file_name)
+                dst_file = os.path.join(parent_folder, file_name)
+                print(f"Moving {src_file} to {dst_file}...")
+                shutil.move(src_file, dst_file)
+            print(f"Deleting configurations folder: {project_path}")
+            shutil.rmtree(project_path)
+        else:
+            # Move all files from the project path to the sequences folder
+            print(f"Moving files from {project_path} to {sequences_path}...")
+            for root, _, files in os.walk(project_path):
+                for file_name in files:
+                    src_file = os.path.join(root, file_name)
+                    dst_file = os.path.join(sequences_path, file_name)
+                    print(f"Moving {src_file} to {dst_file}...")
+                    shutil.move(src_file, dst_file)
+            # Delete the project folder after moving all files
+            print(f"Deleting project folder: {project_path}")
+            shutil.rmtree(project_path)
+
+    # Handle sequence_config.json if it exists
+    sequence_config_file = os.path.join(os.path.abspath(os.path.join(sequences_path, "..")), "sequence_config.json")
+    if os.path.exists(sequence_config_file):
+        dst_file = os.path.join(sequences_path, "sequence_config.json")
+        print(f"Moving {sequence_config_file} to {dst_file}...")
+        shutil.move(sequence_config_file, dst_file)
+    else:
+        print("sequence_config.json does not exist. Skipping...")
+
+
 def main():
     if not os.path.exists(MANIFEST_FILE):
         print(f"Manifest file {MANIFEST_FILE} not found.")
@@ -145,6 +215,10 @@ def main():
         project_path = project.get("path")
         if os.path.exists(project_path):
             delete_git_folders(project_path)
+
+    # Organize files into 'sequences' folder and handle configurations
+    print("Organizing files into 'sequences' folder and merging configurations...")
+    move_files_to_sequences_and_merge(root)
 
 
 if __name__ == "__main__":
